@@ -10,7 +10,7 @@ reserved = {
     "int":"INT",
     "float":"FLOAT"
 }
-literals = ";}{><+-*/)(="
+literals = ";:}{><+-*/)(="
 tokens = (
     'CTEI','CTEF','CTES','DIFF','ID',
     'PROGRAM','IF','ELSE','PRINT','VAR',
