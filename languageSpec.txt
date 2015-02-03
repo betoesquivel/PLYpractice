@@ -1,0 +1,68 @@
+Lenguaje: MyDuck 2015
+ 
+TOKENS
+Palabras Reservadas
+program, if, else, print, var, int, float
+ 
+Delimitadores
+';', '{', '}', '<', '>', '<>', '+', '-', '*', '/', '(', ')', '='
+ 
+Expresiones Regulares
+id   [a-zA-Z][a-zA-Z0-9_]*
+cteI [0-9]+
+cteF [0-9]+\.[0-9]+
+cteS '".*"'
+ 
+GRAMÁTICA
+<PROGRAMA>    ::= program id ';' <VARS> <BLOQUE>
+              |   program id ';' <BLOQUE>
+ 
+<VARS>        ::= var <VARS2>
+<VARS2>       ::= id ':' <TIPO> ';' <VARS2>
+              |   id ',' <VARS2>
+ 
+<TIPO>        ::= int
+              |   float
+ 
+<BLOQUE>      ::= '{' <BLOQUE2>
+<BLOQUE2>     ::= <ESTATUTO> <BLOQUE2>
+              |   '}'
+ 
+<ESTATUTO>    ::= <ASIGNACION>
+              |   <CONDICION>
+              |   <ESCRITURA>
+ 
+<ASIGNACION>  ::= id '=' <EXPRESION> ';'
+ 
+<EXPRESION>   ::= <EXP> <EXPRESION2> <EXP>
+<EXPRESION2>  ::= '>'
+              |   '<'
+              |   '<>'
+ 
+<CONDICION>   ::= if '(' <EXPRESION> ')' <BLOQUE> <CONDICION2>
+<CONDICION2>  ::= else <BLOQUE> ';'
+              |   ';'
+ 
+<ESCRITURA>   ::= print '(' <ESCRITURA2>
+<ESCRITURA2>  ::= <EXPRESION> ','
+              | cte.string ','
+              | ')' ';'
+ 
+<EXP>         ::= <TERMINO> <EXP2>
+<EXP2>        ::= '+' <EXP>
+              |   '-' <EXP>
+              |   empty
+ 
+<TERMINO>     ::= <FACTOR> <TERMINO2>
+<TERMINO2>    ::= '*' <TERMINO>
+              |   '/' <TERMINO>
+              |   empty
+ 
+<FACTOR>      ::= '(' <EXPRESION> ')'
+              |   '+' <VARCTE>
+              |   '-' <VARCTE>
+              |   <VARCTE>
+ 
+<VARCTE>      ::= id
+              |   cteI
+              |   cte
