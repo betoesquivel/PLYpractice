@@ -18,6 +18,7 @@ tokens = (
 )
 
 # token regular definition
+t_ignore = ' \t'
 t_CTEI   = '[0-9]+'
 t_CTEF   = '[0-9]+\.[0-9]+'
 t_CTES   = '".*"'
@@ -30,6 +31,8 @@ def t_ID(t):
     return t
 
 def t_error(t):
+    print "Error de lexico en: ", t
+    exit(-1)
     t.lexer.skip(1)
 
 lexer = lex.lex();
