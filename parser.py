@@ -106,6 +106,6 @@ def p_empty(p):
     pass
 
 def p_error(p):
-    print "Error de sintaxis en: '%s' ", p.value
-
+    print "Error de sintaxis en token: ", p.type
+    print "en la siguiente posicion: {0} ".format(p.lexpos)
 parser = yacc.yacc()
