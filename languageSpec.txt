@@ -5,28 +5,30 @@ Palabras Reservadas
 program, if, else, print, var, int, float
  
 Delimitadores
-';', '{', '}', '<', '>', '<>', '+', '-', '*', '/', '(', ')', '='
+';', '{', '}', '<', '>', '+', '-', '*', '/', '(', ')', '='
  
 Expresiones Regulares
 id   [a-zA-Z][a-zA-Z0-9_]*
 cteI [0-9]+
 cteF [0-9]+\.[0-9]+
 cteS '".*"'
+diff <>
  
 GRAMÁTICA
-<PROGRAMA>    ::= program id ';' <VARS> <BLOQUE>
-              |   program id ';' <BLOQUE>
- 
+<PROGRAMA>    ::= program id ';' <PROGRAMA2> <BLOQUE>
+<PROGRAMA2>   ::= <VARS> | epsilon
+
 <VARS>        ::= var <VARS2>
-<VARS2>       ::= id ':' <TIPO> ';' <VARS2>
-              |   id ',' <VARS2>
+<VARS2>       ::= id <VARS3>
+<VARS3>       ::= ',' <VARS2>
+              |   ':' <TIPO> ';' <VARS4>
+<VARS4>   ::= <VARS2> | epsilon
  
-<TIPO>        ::= int
-              |   float
+<TIPO>        ::= int | float
  
-<BLOQUE>      ::= '{' <BLOQUE2>
+<BLOQUE>      ::= '{' <BLOQUE2> '}'
 <BLOQUE2>     ::= <ESTATUTO> <BLOQUE2>
-              |   '}'
+              |   epsilon
  
 <ESTATUTO>    ::= <ASIGNACION>
               |   <CONDICION>
@@ -34,20 +36,22 @@ GRAMÁTICA
  
 <ASIGNACION>  ::= id '=' <EXPRESION> ';'
  
-<EXPRESION>   ::= <EXP> <EXPRESION2> <EXP>
-<EXPRESION2>  ::= '>'
-              |   '<'
-              |   '<>'
+<EXPRESION>   ::= <EXP> <EXPRESION2>
+<EXPRESION2>  ::= '>'   <EXP>    
+              |   '<'   <EXP>
+              |   diff  <EXP>
+              |   epsilon
  
-<CONDICION>   ::= if '(' <EXPRESION> ')' <BLOQUE> <CONDICION2>
-<CONDICION2>  ::= else <BLOQUE> ';'
-              |   ';'
+<CONDICION>   ::= if '(' <EXPRESION> ')' <BLOQUE> <CONDICION2> ';'
+<CONDICION2>  ::= else <BLOQUE> 
+              |   epsilon
  
-<ESCRITURA>   ::= print '(' <ESCRITURA2>
-<ESCRITURA2>  ::= <EXPRESION> ','
-              | cte.string ','
-              | ')' ';'
- 
+<ESCRITURA>   ::= print '(' <ESCRITURA2> ')' ';'
+<ESCRITURA2>  ::= <EXPRESION> <ESCRITURA3>
+              |   CTES <ESCRITURA3>
+<ESCRITURA3>  ::= ',' <ESCRITURA2>
+              |   epsilon
+
 <EXP>         ::= <TERMINO> <EXP2>
 <EXP2>        ::= '+' <EXP>
               |   '-' <EXP>
@@ -59,10 +63,9 @@ GRAMÁTICA
               |   empty
  
 <FACTOR>      ::= '(' <EXPRESION> ')'
-              |   '+' <VARCTE>
+              |   <FACTOR2>
+<FACTOR2>     ::= '+' <VARCTE>
               |   '-' <VARCTE>
               |   <VARCTE>
  
-<VARCTE>      ::= id
-              |   cteI
-              |   cte
+<VARCTE>      ::= id |   cteI |   cteF
